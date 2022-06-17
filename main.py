@@ -1,15 +1,29 @@
-from typing import Union
+from typing import Union, Optional
 
 from fastapi import FastAPI
+
+from model.data import userData
 
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
+def home():
     return {"Hello": "World"}
 
+@app.get("/version")
+def version():
+    return {"version":"one"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q} 
+@app.get("/users")
+def getUsers():
+    return{"data":userData}
+
+@app.get("/user/{userId}")
+def getSpecificUser(userId: int):
+    return {"data":{} }
+
+
+@app.post("/search")
+def read_item(q: str):
+    return {"results": [{}] }    
