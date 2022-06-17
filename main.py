@@ -21,7 +21,17 @@ def getUsers():
 
 @app.get("/user/{userId}")
 def getSpecificUser(userId: int):
-    return {"data":{} }
+    user  = {}
+    message = "User Not Found"
+    lengthOfUserData = len(userData)
+    for i in range(lengthOfUserData):
+        if userData[i].id == userId:
+            user = userData[i]
+            message = "User Found"
+            break
+
+
+    return {"data": user, "message": message }
 
 
 @app.post("/search")
