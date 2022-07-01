@@ -1,8 +1,7 @@
-from typing import Union, Optional
-
 from fastapi import FastAPI
+from model.request.index import UserRequest
 
-from model.data import userData
+from model.db.data import userData
 
 app = FastAPI()
 
@@ -17,7 +16,7 @@ def version():
 
 @app.get("/users")
 def getUsers():
-    return{"data":userData}
+    return{"data": userData }
 
 @app.get("/user/{userId}")
 def getSpecificUser(userId: int):
@@ -25,15 +24,14 @@ def getSpecificUser(userId: int):
     message = "User Not Found"
     lengthOfUserData = len(userData)
     for i in range(lengthOfUserData):
-        if userData[i].id == userId:
+        if userData[i]["id"] == userId:
             user = userData[i]
             message = "User Found"
             break
+    return { "data": user, "message": message }
 
-
-    return {"data": user, "message": message }
-
-
-@app.post("/search")
-def read_item(q: str):
-    return {"results": [{}] }    
+@app.post("/create-user")
+def createUser(user: UserRequest):
+    userData.append(user)
+    
+    return { "data": userData, "message": "User Created" }
